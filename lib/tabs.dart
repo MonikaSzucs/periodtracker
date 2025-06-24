@@ -49,10 +49,10 @@ class _TabsState extends State<Tabs> {
               child: Container(
                 height: 100.0, // Reduced to prevent overflow
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     width: 1.5,
                   ),
                 ),
@@ -71,7 +71,7 @@ class _TabsState extends State<Tabs> {
                     });
                   },
                   selectedItemColor: Color(0xFFE91E63),
-                  unselectedItemColor: Color(0xFFE91E63).withOpacity(0.5),
+                  unselectedItemColor: Color(0xFFE91E63).withValues(alpha: 0.5),
                   items: const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
