@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 class Report extends StatefulWidget {
   const Report({super.key});
@@ -11,10 +12,13 @@ class _ReportState extends State<Report> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
-        color: Colors.orange,
-        child: const Center(
-            child: Text("Report")
+        color: Colors.white,
+        child: Center(
+            child: Text(
+              l10n?.titleReport ?? '',
+            )
         )
     );
   }

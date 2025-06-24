@@ -1,7 +1,6 @@
 // lib/theme/app_theme.dart
 import 'package:flutter/material.dart';
 import '../core/palette.dart';
-import '../core/app_colors.dart';
 
 class AppTheme {
   static ThemeData get darkTheme => ThemeData(
@@ -9,7 +8,7 @@ class AppTheme {
     scaffoldBackgroundColor: Palette.darkBackground,
     colorScheme: const ColorScheme.dark(
       primary: Palette.highlightYellow,
-      background: Palette.darkBackground,
+      onSurface: Palette.darkBackground,
       surface: Palette.darkBackground,
     ),
     textTheme: const TextTheme(
@@ -23,7 +22,7 @@ class AppTheme {
     scaffoldBackgroundColor: Palette.lightBackground,
     colorScheme: const ColorScheme.light(
       primary: Palette.highlightYellow,
-      background: Palette.lightBackground,
+      onSurface: Palette.lightBackground,
       surface: Palette.lightBackground,
     ),
     textTheme: const TextTheme(
