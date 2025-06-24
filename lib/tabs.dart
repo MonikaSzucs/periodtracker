@@ -26,6 +26,7 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       extendBody: true,
       body: PageView(
@@ -71,7 +72,7 @@ class _TabsState extends State<Tabs> {
                     });
                   },
                   selectedItemColor: Color(0xFFE91E63),
-                  unselectedItemColor: Color(0xFFE91E63).withValues(alpha: 0.5),
+                  unselectedItemColor: isDark ? Color(0xFFFFFFF).withValues(alpha: 0.5) : Color(0x0000000).withValues(alpha: 0.5),
                   items: const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),

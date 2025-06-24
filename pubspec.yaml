@@ -21,6 +21,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/images/backgrounddark.jpg
+    - assets/images/backgroundlight.jpg
 
 # Keep this for other flutter_gen features (colors, fonts, etc.)
 flutter_gen:

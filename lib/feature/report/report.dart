@@ -13,8 +13,15 @@ class _ReportState extends State<Report> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(isDark ? 'assets/images/backgrounddark.jpg': 'assets/images/backgroundlight.jpg'),
+            fit: BoxFit.cover, // Covers entire screen
+          ),
+        ),
         child: Center(
             child: Text(
               l10n?.titleReport ?? '',
