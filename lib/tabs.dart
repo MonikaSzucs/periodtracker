@@ -72,7 +72,7 @@ class _TabsState extends State<Tabs> {
                     });
                   },
                   selectedItemColor: Color(0xFFE91E63),
-                  unselectedItemColor: isDark ? Color(0xFFFFFFF).withValues(alpha: 0.5) : Color(0x0000000).withValues(alpha: 0.5),
+                  unselectedItemColor: isDark ? Color(0xFFFFFFFF).withValues(alpha: 0.5) : Color(0x00000000).withValues(alpha: 0.5),
                   items: const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
