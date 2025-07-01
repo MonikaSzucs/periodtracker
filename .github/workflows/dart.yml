@@ -17,18 +17,23 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.5'  # Or your required version
+          flutter-version: '3.32.5'  # Use your required version
           cache: true
 
       - name: Verify Flutter version
-        run: flutter --version
+        run: |
+          flutter --version
+          dart --version
 
       - name: Install dependencies
         run: flutter pub get
 
-      # Corrected format command:
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+      # Correct formatting check for modern Flutter versions
+      - name: Check code formatting
+        run: |
+          echo "Checking code formatting..."
+          dart format --output=none --set-exit-if-changed .
+          echo "✓ Formatting looks good!"
 
       - name: Analyze code
         run: flutter analyze --fatal-infos
@@ -41,3 +46,8 @@ jobs:
 
       - name: Build iOS (simulator)
         run: flutter build ios --simulator --no-codesign
+
+      # Optional coverage upload
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: success()
