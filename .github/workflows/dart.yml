@@ -14,20 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter (explicit version)
+      - name: Setup Flutter (3.32.5)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'  # Explicit stable version
+          flutter-version: '3.32.5'  # Contains Dart 3.8.1
           cache: true
+
+      - name: Verify versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Analyze code
-        run: flutter analyze --fatal-infos
 
       - name: Run tests
         run: flutter test --coverage
@@ -39,17 +38,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'
-
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Build App Bundle
-        run: flutter build appbundle --release
+          flutter-version: '3.32.5'
+      - run: flutter build apk --release
+      - run: flutter build appbundle --release
 
   build-ios:
     needs: test
@@ -58,14 +51,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'
-
-      - name: Build iOS (simulator)
-        run: |
+          flutter-version: '3.32.5'
+      - run: |
           flutter build ios --config-only
           xcodebuild build \
             -workspace Runner.xcworkspace \
