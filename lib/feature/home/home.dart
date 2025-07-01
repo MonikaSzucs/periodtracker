@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:periodtracker/core/app_colors.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -334,7 +333,7 @@ class _HomeState extends State<Home> {
                                       Text(
                                         timeRange,
                                         style: TextStyle(
-                                          color: Colors.white.withOpacity(0.8),
+                                          color: Colors.white.withValues(alpha:0.8),
                                           fontSize: 10,
                                           fontStyle: appointment.isAllDay ? FontStyle.italic : FontStyle.normal,
                                         ),
@@ -366,8 +365,8 @@ class _HomeState extends State<Home> {
                                 agendaViewHeight: screenHeight * 0.4,
                                 agendaStyle: AgendaStyle(
                                   backgroundColor: isDark
-                                      ? Colors.black.withOpacity(0.5)
-                                      : Colors.white.withOpacity(0.7),
+                                      ? Colors.black.withValues(alpha:0.5)
+                                      : Colors.white.withValues(alpha:0.7),
                                   dayTextStyle: TextStyle(color: textColor),
                                   dateTextStyle: TextStyle(color: textColor),
                                   appointmentTextStyle: TextStyle(color: textColor),
@@ -381,16 +380,16 @@ class _HomeState extends State<Home> {
                                     fontSize: 15,
                                   ),
                                   leadingDatesTextStyle: TextStyle(
-                                    color: Colors.black.withOpacity(0.4),
+                                    color: Colors.black.withValues(alpha:0.4),
                                     fontSize: 15,
                                   ),
                                   trailingDatesTextStyle: TextStyle(
-                                    color: Colors.black.withOpacity(0.4),
+                                    color: Colors.black.withValues(alpha:0.4),
                                     fontSize: 15,
                                   ),
-                                  leadingDatesBackgroundColor: Colors.grey.withOpacity(0.4),
+                                  leadingDatesBackgroundColor: Colors.grey.withValues(alpha:0.4),
                                   trailingDatesBackgroundColor: Colors.grey,
-                                  todayBackgroundColor: Colors.blue.withOpacity(0.3),
+                                  todayBackgroundColor: Colors.blue.withValues(alpha: 0.3),
                                 ),
                               ),
                             ),
