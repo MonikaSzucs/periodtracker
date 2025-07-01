@@ -14,11 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Explicitly specify Flutter version instead of using 'stable'
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'  # or pin to a version like '3.19.5'
-          channel: 'stable'
+          flutter-version: '3.22.1'  # Explicit version (check latest stable)
+          # channel: 'stable'  # Remove this line
 
       - name: Install dependencies
         run: flutter pub get
