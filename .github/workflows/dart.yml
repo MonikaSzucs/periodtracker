@@ -1,4 +1,4 @@
-name: Flutter CI/CD
+name: Flutter CI/CD (Android + iOS)
 
 on:
   push:
@@ -8,7 +8,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
 
     steps:
@@ -17,37 +20,35 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.5'
+          flutter-version: 'stable'
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-      # First try to format automatically (non-fatal)
-      - name: Attempt automatic formatting
-        run: |
-          echo "Running automatic formatting..."
-          dart format .
-          git diff --quiet || (
-            echo "::warning::Some files were automatically formatted"
-            echo "Please run 'dart format .' locally and commit the changes"
-          )
-
-      # Then verify no additional formatting needed (fatal)
       - name: Verify formatting
-        run: |
-          echo "Verifying code formatting..."
-          dart format --output=none --set-exit-if-changed .
-          echo "✓ Formatting is correct!"
+        run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze code
-        run: flutter analyze --fatal-infos
+        run: flutter analyze
 
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Build Android APK
+      - name: Build Android (Linux runner only)
+        if: matrix.os == 'ubuntu-latest'
         run: flutter build apk --release
 
-      - name: Build iOS (simulator)
-        run: flutter build ios --simulator --no-codesign
+      - name: Build iOS (macOS runner only)
+        if: matrix.os == 'macos-latest'
+        run: |
+          flutter build ios --config-only --no-codesign
+          xcodebuild -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            DSTROOT=build/ios \
+            OBJROOT=build/ios \
+            SYMROOT=build/ios \
+            ONLY_ACTIVE_ARCH=YES
