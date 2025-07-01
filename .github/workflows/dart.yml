@@ -7,20 +7,17 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup Flutter (explicit version)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.22.1'  # Explicit stable version
           cache: true
 
       - name: Install dependencies
@@ -30,25 +27,49 @@ jobs:
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze code
-        run: flutter analyze
+        run: flutter analyze --fatal-infos
 
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Build Android (Linux runner only)
-        if: matrix.os == 'ubuntu-latest'
+  build-android:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+
+      - name: Build APK
         run: flutter build apk --release
 
-      - name: Build iOS (macOS runner only)
-        if: matrix.os == 'macos-latest'
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+
+  build-ios:
+    needs: test
+    runs-on: macos-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+
+      - name: Build iOS (simulator)
         run: |
-          flutter build ios --config-only --no-codesign
-          xcodebuild -workspace Runner.xcworkspace \
+          flutter build ios --config-only
+          xcodebuild build \
+            -workspace Runner.xcworkspace \
             -scheme Runner \
             -sdk iphonesimulator \
             -configuration Debug \
-            CODE_SIGNING_ALLOWED=NO \
-            DSTROOT=build/ios \
-            OBJROOT=build/ios \
-            SYMROOT=build/ios \
-            ONLY_ACTIVE_ARCH=YES
+            CODE_SIGNING_ALLOWED=NO
