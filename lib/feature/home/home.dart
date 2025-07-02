@@ -16,6 +16,7 @@ class _HomeState extends State<Home> {
   late _CalendarDataSource _calendarDataSource;
   DateTime? _lastTapTime;
   DateTime? _lastTapDate;
+  Color _selectedColor = Colors.blue; 
 
   @override
   void initState() {
@@ -33,6 +34,30 @@ class _HomeState extends State<Home> {
     }
     _lastTapTime = now;
     _lastTapDate = date;
+  }
+
+  Widget _buildColorCircle(Color color, bool isDark, Function setStateDialog) {
+    return GestureDetector(
+      onTap: () {
+        _selectedColor = color;
+        setStateDialog(() {}); // Use the dialog's setState
+      },
+      child: Container(
+        margin: EdgeInsets.all(4),
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: _selectedColor == color 
+                ? (isDark ? Colors.white : Colors.black)
+                : Colors.transparent,
+            width: 2,
+          ),
+        ),
+      ),
+    );
   }
 
   void _showAppointmentEditor(BuildContext context, DateTime selectedDate, [Appointment? existingAppointment]) {
@@ -129,6 +154,20 @@ class _HomeState extends State<Home> {
                               enabled: !isAllDay,
                             ),
                           ),
+                          SizedBox(height: 16),
+                          Text('Select Color:', 
+                              style: TextStyle(color: isDark ? Colors.white : Colors.black)),
+                          SizedBox(height: 8),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                _buildColorCircle(Colors.red, isDark, setState),
+                                _buildColorCircle(Colors.blue, isDark, setState),
+                                _buildColorCircle(Colors.orange, isDark, setState),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                   ],
@@ -186,7 +225,7 @@ class _HomeState extends State<Home> {
                       subject: textController.text.isEmpty 
                           ? (isAllDay ? 'All Day Event' : 'Appointment')
                           : textController.text,
-                      color: isAllDay ? Colors.green : Colors.blue,
+                      color: isAllDay ? Colors.blue : _selectedColor,
                       isAllDay: isAllDay,
                     );
 
@@ -358,7 +397,7 @@ class _HomeState extends State<Home> {
                                 dateTextStyle: TextStyle(color: Colors.black),
                               ),
                               backgroundColor: Colors.transparent,
-                              todayHighlightColor: isDark ? Colors.blueAccent : Colors.blue,
+                              todayHighlightColor: isDark ? Colors.blueAccent : Colors.black,
                               cellBorderColor: Colors.transparent,
                               monthViewSettings: MonthViewSettings(
                                 showAgenda: true,
@@ -370,6 +409,7 @@ class _HomeState extends State<Home> {
                                   dayTextStyle: TextStyle(color: textColor),
                                   dateTextStyle: TextStyle(color: textColor),
                                   appointmentTextStyle: TextStyle(color: textColor),
+
                                 ),
                                 dayFormat: 'EEE',
                                 showTrailingAndLeadingDates: true,
@@ -403,12 +443,6 @@ class _HomeState extends State<Home> {
             ],
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAppointmentEditor(context, DateTime.now());
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
