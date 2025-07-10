@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:periodtracker/feature/home/home.dart';
+import 'package:periodtracker/feature/home/home_view.dart';
 import 'package:periodtracker/feature/more/more.dart';
 import 'package:periodtracker/feature/report/report.dart';
 
@@ -16,7 +17,7 @@ class _TabsState extends State<Tabs> {
   final PageController _pageController = PageController();
   int currentPage = 0;
 
-  final List<Widget> _pages = [const Home(), const Report(), const More()];
+  final List<Widget> _pages = [const HomeView(), const Report(), const More()];
 
   @override
   void dispose() {
